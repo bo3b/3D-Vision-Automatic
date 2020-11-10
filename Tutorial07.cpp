@@ -222,10 +222,6 @@ HRESULT InitStereo()
 		return status;
 	}
 
-	status = NvAPI_Stereo_SetDriverMode(NVAPI_STEREO_DRIVER_MODE_DIRECT);
-	if (FAILED(status))
-		return status;
-
 	return status;
 }
 
@@ -675,35 +671,13 @@ void RenderFrame()
 	// The _41 parameter, I don't presently know what it is, but this
 	// sequence works to handle both convergence and separation hot keys properly.
 	//
-	status = NvAPI_Stereo_SetActiveEye(g_StereoHandle, NVAPI_STEREO_EYE_LEFT);
-	if (SUCCEEDED(status))
-	{
-		cb.mWorld = XMMatrixTranspose(g_World);
-		cb.mView = XMMatrixTranspose(g_View);
 
-		cb.mProjection = g_Projection;
-		cb.mProjection._31 -= separation;
-		cb.mProjection._41 = convergence;
-		cb.mProjection = XMMatrixTranspose(cb.mProjection);
-		g_pImmediateContext->UpdateSubresource(g_pSharedCB, 0, nullptr, &cb, 0, 0);
+	cb.mWorld = XMMatrixTranspose(g_World);
+	cb.mView = XMMatrixTranspose(g_View);
+	cb.mProjection = XMMatrixTranspose(g_Projection);
+	g_pImmediateContext->UpdateSubresource(g_pSharedCB, 0, nullptr, &cb, 0, 0);
 
-		Render();
-	}
-
-	status = NvAPI_Stereo_SetActiveEye(g_StereoHandle, NVAPI_STEREO_EYE_RIGHT);
-	if (SUCCEEDED(status))
-	{
-		cb.mWorld = XMMatrixTranspose(g_World);
-		cb.mView = XMMatrixTranspose(g_View);
-
-		cb.mProjection = g_Projection;
-		cb.mProjection._31 += separation;
-		cb.mProjection._41 = -convergence;
-		cb.mProjection = XMMatrixTranspose(cb.mProjection);
-		g_pImmediateContext->UpdateSubresource(g_pSharedCB, 0, nullptr, &cb, 0, 0);
-
-		Render();
-	}
+	Render();
 
 	//
 	// Present our back buffer to our front buffer
