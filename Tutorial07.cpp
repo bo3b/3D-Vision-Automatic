@@ -660,16 +660,8 @@ void RenderFrame()
 	status = NvAPI_Stereo_GetSeparation(g_StereoHandle, &pSeparationPercentage);
 	status = NvAPI_Stereo_GetEyeSeparation(g_StereoHandle, &pEyeSeparation);
 
-	float separation = pEyeSeparation * pSeparationPercentage / 100;
-	float convergence = pEyeSeparation * pSeparationPercentage / 100 * pConvergence;
-
-
 	//
-	// Drawing same object twice, once for each eye.
-	// Eye specific setup is for the Projection matrix.
-	// The _31 parameter is the X translation for the off center Projection.
-	// The _41 parameter, I don't presently know what it is, but this
-	// sequence works to handle both convergence and separation hot keys properly.
+	// Set the shared buffer to new rotated g_world for every frame, which creates the animation.
 	//
 
 	cb.mWorld = XMMatrixTranspose(g_World);
@@ -681,9 +673,6 @@ void RenderFrame()
 
 	//
 	// Present our back buffer to our front buffer
-	//
-	// In stereo mode, the driver knows to use the 2x width buffer, and
-	// present each eye in order.
 	//
 	g_pSwapChain->Present(0, 0);
 }
