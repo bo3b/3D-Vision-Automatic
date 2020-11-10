@@ -1,11 +1,9 @@
-# 3D-Vision-Direct
-Small stereoscopic sample demonstrating how to use 3D Vision Direct Mode using DX11.  
+# 3D-Vision-Automatic
+Small stereoscopic sample demonstrating how to use 3D Vision Automatic Mode using DX11.  
 
-I could not find any example code showing how to use Direct Mode, while just using the nvapi, so I developed this example.
-
-All older examples use a rendertarget with an extra line for the stereo signature.  This example works
-without requiring the stereo signature or any special setup, ~~other than doubling the size of the backbuffer.~~
- Default branch is now 'single-width' which is the preferred approach.
+This is just a simple spinning box sample in DX11, that emulates the way a lot of games create
+their swapchains and devices.  If running in fullscreen mode, this will be automatically be
+stereoized by 3D Vision.
 <br>
 <br>
 
@@ -19,5 +17,6 @@ https://github.com/walbourn/directx-sdk-samples/tree/master/Direct3D11Tutorials
 
 The piece used here is only Tutorial_07, which shows the full tutorial with a spinning cube, drawn using shaders and vertex buffer.
 
-The Tutorial was modifed as little as possible, while adding the NVidia 3D Vision Direct Mode support.  
-After initializing Direct Mode, the projection matrix is setup for stereo drawing, and then rendering is done twice, once for each eye.
+The old Tutorial07 was modifed as little as possible, but is not remotely like the newest version which uses DXGI factories
+instead of the CreateDeviceAndSwapChain.
+
